@@ -9674,7 +9674,7 @@ h6 {
 .getstarted-wrap {
   display: flex;
   flex-direction: column;
-  min-height: 1000px;
+  min-height: 100vh;
   background: transparent linear-gradient(128deg, #754400 0%, #333354 100%) 0% 0% no-repeat padding-box;
 }
 
