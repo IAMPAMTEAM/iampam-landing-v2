@@ -703,6 +703,10 @@ h6 {
   font-weight: 900;
 }
 
+.main-nav__right > a {
+  text-decoration-line: none;
+}
+
 .main-nav__one .container-fluid {
   padding-left: 75px;
   padding-right: 75px;

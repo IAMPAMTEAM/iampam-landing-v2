@@ -46,20 +46,22 @@ const Navbar = () => {
           {/* /.main-nav__main-navigation */}
           <div className="main-nav__right">
             {/* TODO: 소셜로그인한 사용자: Get Started 버튼 대신 CONSOLE 버튼 (https://cloudops.iampam.io로 이동하는 버튼) */}
-            {/* <Link to="/contact" className="thm-btn mr-4">
-              Login
+            <Link to="/login" className="thm-btn mr-12 nav-btn">
+              LOGIN
             </Link>
-            <Link to="/register/company" className="thm-btn mr-4">
-              Get Started
-            </Link> */}
-            {/* <Link to="/contact" className="thm-btn mr-4">
-                Get Started
-                <i className="fa fa-angle-right" />
-              </Link>
-              <Link to="/contact" className="thm-btn">
-                CONSOLE
-                <i className="fa fa-angle-right" />
-              </Link> */}
+            <Link to="/register/company" className="thm-btn mr-4 nav-btn">
+              GET STARTED
+              <i className="fa fa-angle-right" />
+            </Link>
+            <Link to="https://cloudops.iampam.io" className="thm-btn nav-btn" target="_blank">
+              CONSOLE
+              <i className="fa fa-angle-right" />
+            </Link>
+            <Link to="/contact" className="thm-btn nav-btn">
+              {/* TODO: ADD - Logout logic */}
+              LOGOUT
+              <i className="fa fa-angle-right" />
+            </Link>
             {/* /.thm-btn */}
           </div>
           {/* /.main-nav__right */}
