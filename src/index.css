@@ -9783,13 +9783,22 @@ h6 {
   /* margin-top: 130px; */
 }
 
+.signup-cont__form__login {
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16.5px;
+  justify-content: center;
+  /* align-items: center; */
+}
+
 .signup-cont__form-btns {
   display: flex;
   flex-direction: column;
   gap: 16.5px;
   justify-content: center;
   align-items: center;
-  margin-top: 96px;
+  /* margin-top: 96px; */
   padding: 24px;
 }
 

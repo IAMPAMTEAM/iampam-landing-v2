@@ -6,6 +6,7 @@ const authSlice = createSlice({
     displayName: '',
     socialEmail: '',
     profileImage: '',
+    id: '',
   },
   reducers: {
     setDisplayName: (state, action) => {
@@ -17,10 +18,13 @@ const authSlice = createSlice({
     setProfileImage: (state, action) => {
       state.profileImage = action.payload;
     },
+    setId: (state, action) => {
+      state.id = action.payload;
+    },
   },
 });
 
-export const { setDisplayName, setSocialEmail, setProfileImage } = authSlice.actions;
+export const { setDisplayName, setSocialEmail, setProfileImage, setId } = authSlice.actions;
 
 // const store = configureStore({
 //   reducer:

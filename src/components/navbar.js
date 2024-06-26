@@ -1,49 +1,36 @@
-import React, { Component, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import logoFullLight from "../assets/images/logo-full-light.png";
-import { useSelector } from "react-redux";
-import Cookies from "js-cookie";
-import * as PortOne from "@portone/browser-sdk/v2";
+import React, { Component, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import logoFullLight from '../assets/images/logo-full-light.png';
+import { useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
+import * as PortOne from '@portone/browser-sdk/v2';
+import { setId } from '../store/auth';
 
 const Navbar = () => {
-  let publicUrl = process.env.PUBLIC_URL + "/";
-  let imgattr = "logo";
-  let anchor = "#";
+  let publicUrl = process.env.PUBLIC_URL + '/';
+  let imgattr = 'logo';
+  let anchor = '#';
 
   const auth = useSelector((state) => state.auth);
   const register = useSelector((state) => state.register);
 
   const { displayName, socialEmail, profileImage } = auth;
-  const {
-    companyNumber,
-    companyName,
-    contactPerson,
-    contactPhone,
-    contactEmail,
-    awsAccount,
-    awsAccountName,
-    awsAccountType,
-    awsRegions,
-  } = register;
+  const { companyNumber, companyName, contactPerson, contactPhone, contactEmail, awsAccount, awsAccountName, awsAccountType, awsRegions } = register;
 
-  const [authToken, setAuthToken] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
 
-  console.log(Cookies);
-
   useEffect(() => {
-    fetch(
-      "https://9ajdcwvcs2.execute-api.ap-northeast-2.amazonaws.com/dev/verify_token",
-      {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((response) => {
+    fetch('https://9ajdcwvcs2.execute-api.ap-northeast-2.amazonaws.com/dev/verify_token', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
       console.log(response);
       if (response.status === 200) {
+        setIsLogin(true);
+      } else if (auth.id) {
         setIsLogin(true);
       } else {
         setIsLogin(false);
@@ -51,19 +38,15 @@ const Navbar = () => {
     });
   });
 
-  const authTokens = Cookies.get("Authorization");
-
-  console.log(authTokens);
-
   const requestPayment = async () => {
     const orderInfo = {
-      storeId: "store-e80d4fff-be65-4d04-9e84-e1a99e6184e2",
-      channelKey: "channel-key-06e9a427-7834-42df-945c-630201f25aba",
+      storeId: 'store-e80d4fff-be65-4d04-9e84-e1a99e6184e2',
+      channelKey: 'channel-key-06e9a427-7834-42df-945c-630201f25aba',
       paymentId: `payment-${crypto.randomUUID()}`,
-      orderName: "cloudOps",
+      orderName: 'cloudOps',
       totalAmount: 100,
-      currency: "CURRENCY_KRW",
-      payMethod: "CARD",
+      currency: 'CURRENCY_KRW',
+      payMethod: 'CARD',
     };
     const response = await PortOne.requestPayment(orderInfo);
 
@@ -75,40 +58,39 @@ const Navbar = () => {
     console.log(response.paymentId);
     console.log(orderInfo.orderName);
 
-    const notified = await fetch(
-      "https://9ajdcwvcs2.execute-api.ap-northeast-2.amazonaws.com/dev/payment/complete",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          paymentId: response.paymentId,
-          orderProduct: orderInfo.orderName,
-        }),
-      }
-    );
+    const notified = await fetch('https://9ajdcwvcs2.execute-api.ap-northeast-2.amazonaws.com/dev/payment/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        paymentId: response.paymentId,
+        orderProduct: orderInfo.orderName,
+      }),
+    });
 
     if (notified.ok) {
-      console.log("Payment completed");
+      console.log('Payment completed');
       console.log(notified);
     } else {
-      console.error("Failed to notify payment completion");
+      console.error('Failed to notify payment completion');
       console.log(notified);
     }
   };
 
   const logout = async () => {
-    const response = await fetch(
-      "https://9ajdcwvcs2.execute-api.ap-northeast-2.amazonaws.com/dev/logout",
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+    if (auth.id) {
+      console.log('logout completed');
+      setId('');
+    } else {
+      const response = await fetch('https://9ajdcwvcs2.execute-api.ap-northeast-2.amazonaws.com/dev/logout', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+      });
+      if (response.ok && response.status === 200) {
+        setIsLogin(false);
+        console.log('logout completed');
       }
-    );
-    if (response.ok && response.status === 200) {
-      setIsLogin(false);
-      console.log("logout completed");
     }
   };
   return (
@@ -150,61 +132,33 @@ const Navbar = () => {
           {/* /.main-nav__main-navigation */}
 
           <div className="main-nav__right">
-            <Link
-              to="/"
-              className="thm-btn mr-4 subscribe-btn"
-              onClick={requestPayment}
-            >
+            <Link to="/" className="thm-btn mr-4 subscribe-btn" onClick={requestPayment}>
               SUBSCRIBE
             </Link>
 
             {/* TODO: 소셜로그인한 사용자: Get Started 버튼 대신 CONSOLE 버튼 (https://cloudops.iampam.io로 이동하는 버튼) */}
             {isLogin ? (
-              <Link
-                to="/"
-                className="thm-btn nav-btn"
-                style={{ marginRight: "8px" }}
-                onClick={logout}
-              >
+              <Link to="/" className="thm-btn nav-btn" style={{ marginRight: '8px' }} onClick={logout}>
                 {/* TODO: ADD - Logout logic */}
                 LOGOUT
               </Link>
             ) : (
-              <Link
-                to="/login"
-                className="thm-btn nav-btn"
-                style={{ marginRight: "8px" }}
-              >
+              <Link to="/login" className="thm-btn nav-btn" style={{ marginRight: '8px' }}>
                 LOGIN
               </Link>
             )}
 
-            {companyName &&
-            companyNumber &&
-            contactPerson &&
-            contactPhone &&
-            contactEmail &&
-            awsAccount &&
-            awsAccountName &&
-            awsAccountType &&
-            awsRegions &&
-            displayName &&
-            socialEmail &&
-            profileImage ? (
-              <Link
-                to="https://cloudops.iampam.io"
-                className="thm-btn nav-btn"
-                target="_blank"
-              >
+            {companyName && companyNumber && contactPerson && contactPhone && contactEmail && isLogin ? (
+              <Link to="https://cloudops.iampam.io" className="thm-btn nav-btn" target="_blank">
                 CONSOLE
                 <i className="fa fa-angle-right" />
               </Link>
-            ) : (
+            ) : isLogin && !companyName ? (
               <Link to="/register/company" className="thm-btn mr-4 nav-btn">
                 GET STARTED
                 <i className="fa fa-angle-right" />
               </Link>
-            )}
+            ) : null}
 
             {/* /.thm-btn */}
           </div>
