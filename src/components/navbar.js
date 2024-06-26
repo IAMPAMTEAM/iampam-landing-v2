@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import logoFullLight from '../assets/images/logo-full-light.png';
 import { useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
+import * as PortOne from '@portone/browser-sdk/v2';
 
 const Navbar = () => {
   let publicUrl = process.env.PUBLIC_URL + '/';
@@ -17,23 +18,59 @@ const Navbar = () => {
 
   const [authToken, setAuthToken] = useState(null);
 
-  console.log(Cookies.get('Authorization'));
+  console.log(Cookies);
 
-  useEffect(() => {
-    fetch('https://66dqqkach2.execute-api.ap-northeast-2.amazonaws.com/dev/verify_token?token=sdfasfdsf', {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((response) => {
-      console.log(response);
-    });
-  });
+  // useEffect(() => {
+  //   fetch('https://1k7sr9e7tk.execute-api.ap-northeast-2.amazonaws.com/dev/verify_token?token=sdfasfdsf', {
+  //     method: 'GET',
+  //     credentials: 'include',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }).then((response) => {
+  //     console.log(response);
+  //   });
+  // });
 
   const authTokens = Cookies.get('Authorization');
 
   console.log(authTokens);
+
+  const requestPayment = async () => {
+    const orderInfo = {
+      storeId: 'store-e80d4fff-be65-4d04-9e84-e1a99e6184e2',
+      channelKey: 'channel-key-06e9a427-7834-42df-945c-630201f25aba',
+      paymentId: `payment-${crypto.randomUUID()}`,
+      orderName: 'cloudOps',
+      totalAmount: 100,
+      currency: 'CURRENCY_KRW',
+      payMethod: 'CARD',
+    };
+    const response = await PortOne.requestPayment(orderInfo);
+
+    if (response.code != null) {
+      console.log(response.message);
+      return;
+    }
+    console.log(response);
+
+    const notified = await fetch('https://jf1kj8n3i2.execute-api.ap-northeast-2.amazonaws.com/dev/payment/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        paymentId: response.paymentId,
+        orderProduct: orderInfo.orderName,
+      }),
+    });
+
+    if (notified.ok) {
+      console.log('Payment completed');
+      console.log(notified);
+    } else {
+      console.error('Failed to notify payment completion');
+    }
+  };
 
   return (
     <header className="site-header-one go-top">
@@ -72,7 +109,12 @@ const Navbar = () => {
             </ul>
           </div>
           {/* /.main-nav__main-navigation */}
+
           <div className="main-nav__right">
+            <Link to="/" className="thm-btn mr-4 subscribe-btn" onClick={requestPayment}>
+              SUBSCRIBE
+            </Link>
+
             {/* TODO: 소셜로그인한 사용자: Get Started 버튼 대신 CONSOLE 버튼 (https://cloudops.iampam.io로 이동하는 버튼) */}
             {displayName && socialEmail && profileImage ? (
               <Link to="/contact" className="thm-btn nav-btn" style={{ marginRight: '8px' }}>

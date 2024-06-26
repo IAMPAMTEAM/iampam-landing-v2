@@ -111,7 +111,7 @@ h6 {
 .thm-btn {
   display: inline-block;
   vertical-align: middle;
-  border: none;
+  border: 1px solid var(--thm-base);
   outline: none;
   background-color: var(--thm-base);
   font-size: 15px;

@@ -36,7 +36,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const loginGoogle = async (credentialResponse) => {
     try {
-      const response = await fetch('https://66dqqkach2.execute-api.ap-northeast-2.amazonaws.com/dev/login/google', {
+      const response = await fetch('https://ddgz6uloif.execute-api.ap-northeast-2.amazonaws.com/dev/login/google', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -119,14 +119,14 @@ const Login = () => {
                 useOneTap
               />
 
-              <Button
+              {/* <Button
                 className="signup-cont__form-btns__btn"
                 variant="outline-dark"
                 onClick={(credentialResponse) => loginGoogle(credentialResponse)}
               >
                 <img src={LogoGoogle} alt="" />
                 Sign in with Google
-              </Button>
+              </Button> */}
               {/* </GoogleOAuthProvider> */}
               {/* <Button className="signup-cont__form-btns__btn" variant="outline-dark" onClick={loginGoogle}>
                 <img src={LogoGoogle} alt="" />
