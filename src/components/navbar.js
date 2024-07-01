@@ -1,15 +1,11 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logoFullLight from '../assets/images/logo-full-light.png';
 import { useSelector } from 'react-redux';
-import Cookies from 'js-cookie';
-import * as PortOne from '@portone/browser-sdk/v2';
 import { setId } from '../store/auth';
 
 const Navbar = () => {
-  let publicUrl = process.env.PUBLIC_URL + '/';
   let imgattr = 'logo';
-  let anchor = '#';
 
   const auth = useSelector((state) => state.auth);
   const register = useSelector((state) => state.register);
@@ -27,7 +23,6 @@ const Navbar = () => {
         'Content-Type': 'application/json',
       },
     }).then((response) => {
-      console.log(response);
       if (response.status === 200) {
         setIsLogin(true);
       } else if (auth.id) {
@@ -38,44 +33,8 @@ const Navbar = () => {
     });
   });
 
-  const requestPayment = async () => {
-    const orderInfo = {
-      storeId: 'store-e80d4fff-be65-4d04-9e84-e1a99e6184e2',
-      channelKey: 'channel-key-06e9a427-7834-42df-945c-630201f25aba',
-      paymentId: `payment-${crypto.randomUUID()}`,
-      orderName: 'cloudOps',
-      totalAmount: 100,
-      currency: 'CURRENCY_KRW',
-      payMethod: 'CARD',
-    };
-    const response = await PortOne.requestPayment(orderInfo);
-
-    if (response.code != null) {
-      console.error(response.message);
-      return;
-    }
-    console.log(response);
-    console.log(response.paymentId);
-    console.log(orderInfo.orderName);
-
-    const notified = await fetch('https://9ajdcwvcs2.execute-api.ap-northeast-2.amazonaws.com/dev/payment/complete', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({
-        paymentId: response.paymentId,
-        orderProduct: orderInfo.orderName,
-      }),
-    });
-
-    if (notified.ok) {
-      console.log('Payment completed');
-      console.log(notified);
-    } else {
-      console.error('Failed to notify payment completion');
-      console.log(notified);
-    }
-  };
+  // TODO: pricing.js로 옮기기
+  const requestPayment = async () => {};
 
   const logout = async () => {
     if (auth.id) {
@@ -132,7 +91,7 @@ const Navbar = () => {
           {/* /.main-nav__main-navigation */}
 
           <div className="main-nav__right">
-            <Link to="/" className="thm-btn mr-4 subscribe-btn" onClick={requestPayment}>
+            <Link to="/pricing" className="thm-btn mr-4 subscribe-btn" onClick={requestPayment}>
               SUBSCRIBE
             </Link>
 

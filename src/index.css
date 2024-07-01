@@ -61,7 +61,7 @@ font-family: 'Gilroy-ExtraBold';*/
   --special-font-smb: 'Gilroy-SemiBold';
   --thm-base: #ff57a4;
   --thm-base-rgb: 255, 87, 164;
-  --thm-primary: #4275ff;
+  --thm-primary: #6667ab;
   --thm-primary-rgb: 66, 117, 255;
   --thm-black: #42495b;
   --thm-black-rgb: 66, 73, 91;
@@ -11370,4 +11370,101 @@ h6 {
   .cta-eight__content h3 {
     font-size: 36px;
   }
+}
+
+/* pricing */
+.pricing-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* background-color: #1e0342; */
+  background: transparent linear-gradient(128deg, #754400 0%, #333354 100%) 0% 0% no-repeat padding-box;
+}
+
+.pricing-cont {
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 48px;
+  min-width: 840px;
+  color: #fff;
+  border-radius: 8px;
+}
+
+.pricing-cont__title {
+  font-size: 32px;
+  font-weight: 600;
+  text-align: start;
+}
+
+.pricing-cont__interval {
+  margin-top: 48px;
+}
+
+.pricing-cont__interval-title {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: start;
+}
+
+.pricing-cont__products {
+  /* display: flex; */
+  /* justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; */
+}
+
+.pricing-cont__product {
+  margin-bottom: 24px;
+  padding: 12px 8px;
+  border: 2px solid #eee;
+  border-radius: 8px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.pricing-cont__product-label {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: start;
+}
+
+.pricing-division {
+  margin-top: 48px;
+}
+
+.pricing-cont__total {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pricing-cont__total-title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.dollar {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.pricing-cont__btn {
+  text-align: center;
+}
+
+.pricing-cont__btn-subscribe {
+  padding: 12px 20px !important;
+  background-color: #6667ab !important;
+  border: none !important;
+}
+
+.pricing-cont__btn-subscribe:hover {
+  background-color: #9aa7e8 !important;
+  color: #333 !important;
+}
+
+.form-check-input:checked {
+  background-color: #6667ab !important;
+  border-color: #6667ab !important;
 }
